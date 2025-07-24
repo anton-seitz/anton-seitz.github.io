@@ -5,15 +5,18 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Anton Seitz | Blog & Projects</title>
+  <!-- Font Awesome for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-pO1A6E70Xz1m0+O0Yd8W3d+XqYjS8TfN5e2x+3r5FVVzTtI9H+Ke9jX8x9J1QF8e1C6i8D3B9b/1GQ1YKm1ag==" crossorigin="anonymous" referrerpolicy="no-referrer" />
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
   <header class="site-header">
     <div class="container">
-      <h1 class="logo">Anton Seitz</h1>
+      <div class="logo">Anton Seitz</div>
       <nav>
         <ul class="nav-list">
-          <li><a href="#blog">Blog</a></li>
+          <li><a href="#hero">Home</a></li>
+          <li><a href="#gallery">Gallery</a></li>
           <li><a href="#projects">Projects</a></li>
           <li><a href="#interests">Interests</a></li>
         </ul>
@@ -22,42 +25,43 @@
   </header>
 
   <main>
-    <section id="hero">
-      <div class="container">
-        <h2>Welcome to My Corner of the Web</h2>
-        <p>Thoughts, projects, and passions—all in one place.</p>
+    <section id="hero" class="hero">
+      <div class="container hero-content">
+        <div class="photo-placeholder">
+          <img src="placeholder.jpg" alt="Your Photo" />
+        </div>
+        <div class="welcome-text">
+          <h2>Welcome to My Corner of the Web</h2>
+          <p>Thoughts, projects, and passions—all in one place.</p>
+          <div class="social-icons">
+            <a href="https://youtube.com/yourchannel" target="_blank"><i class="fab fa-youtube"></i></a>
+            <a href="https://instagram.com/yourprofile" target="_blank"><i class="fab fa-instagram"></i></a>
+            <a href="https://linkedin.com/in/yourprofile" target="_blank"><i class="fab fa-linkedin"></i></a>
+            <a href="https://github.com/yourusername" target="_blank"><i class="fab fa-github"></i></a>
+          </div>
+        </div>
       </div>
     </section>
 
-    <section id="blog" class="section">
+    <section id="gallery" class="section gallery">
       <div class="container">
-        <h2>Latest Posts</h2>
-        <div class="grid">
-          <article class="card">
-            <h3><a href="#">Post Title One</a></h3>
-            <p>Short excerpt to draw readers in—insightful and concise.</p>
-          </article>
-          <article class="card">
-            <h3><a href="#">Post Title Two</a></h3>
-            <p>Another teaser for my latest deep dive into tech and life.</p>
-          </article>
+        <h2>Photo Gallery</h2>
+        <div class="grid gallery-grid">
+          <div class="photo-card"><img src="img1.jpg" alt="Photo 1"></div>
+          <div class="photo-card"><img src="img2.jpg" alt="Photo 2"></div>
+          <div class="photo-card"><img src="img3.jpg" alt="Photo 3"></div>
+          <div class="photo-card"><img src="img4.jpg" alt="Photo 4"></div>
         </div>
       </div>
     </section>
 
     <section id="projects" class="section">
       <div class="container">
-        <h2>Current Projects</h2>
-        <ul class="project-list">
-          <li>
-            <h3>AI-Powered Annotation Tool</h3>
-            <p>Building a system for smart document tagging and retrieval.</p>
-          </li>
-          <li>
-            <h3>Remote Work City Selector</h3>
-            <p>Analyzing cost-of-living & climate for digital nomads.</p>
-          </li>
-        </ul>
+        <h2>Current Project</h2>
+        <div class="project-card">
+          <h3>AI-Powered Annotation Tool</h3>
+          <p>Building a system for smart document tagging and retrieval.</p>
+        </div>
       </div>
     </section>
 
@@ -65,10 +69,9 @@
       <div class="container">
         <h2>Interests</h2>
         <ul class="info-list">
-          <li>Judo & Martial Arts</li>
-          <li>Machine Learning & AI</li>
-          <li>Mathematics & Economics</li>
-          <li>Travel & Culture</li>
+          <li>🥋 Judo & Martial Arts</li>
+          <li>🤖 Machine Learning & AI</li>
+          <li>🌍 Travel</li>
         </ul>
       </div>
     </section>
