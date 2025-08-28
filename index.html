@@ -1,88 +1,332 @@
-<!-- index.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Anton Seitz | Blog & Projects</title>
-  <!-- Font Awesome for icons -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-pO1A6E70Xz1m0+O0Yd8W3d+XqYjS8TfN5e2x+3r5FVVzTtI9H+Ke9jX8x9J1QF8e1C6i8D3B9b/1GQ1YKm1ag==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-  <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-  <header class="site-header">
-    <div class="container">
-      <div class="logo">Anton Seitz</div>
-      <nav>
-        <ul class="nav-list">
-          <li><a href="#hero">Home</a></li>
-          <li><a href="#gallery">Gallery</a></li>
-          <li><a href="#projects">Projects</a></li>
-          <li><a href="#interests">Interests</a></li>
-        </ul>
-      </nav>
-    </div>
-  </header>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>your-handle :: home</title>
+  <meta name="description" content="Personal site of a geek with a love for retro computing, terminals, and pixel art." />
+  <meta name="theme-color" content="#00ff7f" />
+  <!-- Optional pixel/terminal fonts (uncomment if you want Google Fonts) -->
+  <!-- <link rel="preconnect" href="https://fonts.googleapis.com"> -->
+  <!-- <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin> -->
+  <!-- <link href="https://fonts.googleapis.com/css2?family=VT323&family=IBM+Plex+Mono:wght@300;400;600&display=swap" rel="stylesheet"> -->
+  <style>
+    :root{
+      --bg:#0b0f0c;           /* deep black/green */
+      --bg-soft:#0f1512;      /* panel background */
+      --grid:#0a2f1e;         /* neon grid lines */
+      --txt:#b8ffcb;          /* phosphor green */
+      --txt-dim:#6fd99e;      /* dim green */
+      --accent:#00ff7f;       /* neon */
+      --warning:#ffdd57;      /* amber */
+      --link:#58ffc5;         /* aqua */
+      --badge:#11261d;        /* badge background */
+      --shadow: 0 0 8px rgba(0,255,127,.35), 0 0 24px rgba(0,255,127,.15);
+    }
 
-  <main>
-    <section id="hero" class="hero">
-      <div class="container hero-content">
-        <div class="photo-placeholder">
-          <!-- Gray box placeholder -->
-          <img src="https://via.placeholder.com/200/333333/bbbbbb?text=Your+Photo" alt="Your Photo" />
+    @media (prefers-color-scheme: light) {
+      :root{
+        --bg:#e7fff2; --bg-soft:#eafff6; --grid:#c6f4df; --txt:#0b3d2a; --txt-dim:#296650; --accent:#008f5a; --link:#006d4b; --badge:#d4ffec;
+      }
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      background: radial-gradient(1200px 700px at 50% -200px, var(--grid) 0%, transparent 60%), var(--bg);
+      color:var(--txt);
+      font: 16px/1.6 system-ui, Segoe UI, Roboto, "IBM Plex Mono", Menlo, Consolas, monospace;
+      text-rendering: optimizeLegibility;
+    }
+
+    /* CRT scanlines */
+    .crt::before{
+      content:""; position:fixed; inset:0; pointer-events:none;
+      background: repeating-linear-gradient( to bottom, rgba(0,0,0,.0) 0px, rgba(0,0,0,.0) 2px, rgba(0,0,0,.05) 3px, rgba(0,0,0,.0) 4px );
+      mix-blend-mode: multiply; opacity:.6; z-index:10; filter: blur(.1px);
+    }
+    .crt::after{ /* subtle vignette */
+      content:""; position:fixed; inset:-2px; pointer-events:none; z-index:11;
+      box-shadow: inset 0 0 60px rgba(0,0,0,.6), inset 0 0 200px rgba(0,0,0,.5);
+    }
+
+    .wrap{max-width:1100px; margin:0 auto; padding:24px; display:grid; gap:16px; grid-template-columns: 260px 1fr;}
+    @media (max-width: 900px){ .wrap{ grid-template-columns: 1fr; } }
+
+    /* Sidebar */
+    .sidebar{
+      position:sticky; top:16px; align-self:start; background:var(--bg-soft);
+      border:1px solid var(--grid); border-radius:16px; box-shadow: var(--shadow);
+      padding:18px; display:flex; flex-direction:column; gap:14px;
+    }
+    .brand{display:flex; align-items:center; gap:12px}
+    .logo{
+      width:42px; height:42px; border-radius:8px; background: linear-gradient(135deg, var(--accent), transparent 60%), var(--badge);
+      display:grid; place-items:center; box-shadow: var(--shadow);
+      font-weight:800; color:#001b10; text-shadow: 0 1px 0 rgba(255,255,255,.4);
+    }
+    .title{font-size:20px; font-weight:700; letter-spacing:.4px}
+    .muted{color:var(--txt-dim); font-size:12px}
+
+    nav a{
+      display:block; padding:8px 10px; border-radius:10px; text-decoration:none; color:var(--txt);
+      border:1px dashed transparent; transition: all .15s ease;
+    }
+    nav a:hover, nav a:focus{ outline:none; border-color: var(--accent); background: rgba(0,255,127,.06); box-shadow: var(--shadow); }
+
+    .panel{
+      background: var(--bg-soft); border:1px solid var(--grid); border-radius:16px; box-shadow: var(--shadow);
+      padding:22px; position:relative; overflow:hidden;
+    }
+
+    .topline{font-family: "VT323", "IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace; font-size:20px}
+    .caret{ display:inline-block; width:.6em; background:var(--accent); animation: blink 1s steps(1) infinite; }
+    @keyframes blink{50%{opacity:0}}
+
+    h1,h2,h3{margin:0 0 12px 0}
+    h1{font-size:34px}
+    h2{font-size:22px}
+
+    code, .mono{ font-family: "VT323", "IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace; }
+
+    .grid{
+      display:grid; gap:16px;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    }
+
+    .tag{ font-size:12px; padding:2px 8px; border-radius:999px; border:1px solid var(--grid); background: var(--badge); }
+
+    .badges{display:flex; flex-wrap:wrap; gap:8px; align-items:center}
+    .badge-88x31{
+      width:88px; height:31px; border-radius:6px; display:grid; place-items:center; background:var(--badge); border:1px solid var(--grid);
+      font-size:10px; text-transform:uppercase; letter-spacing:.8px;
+    }
+
+    footer{margin:24px 0 60px; text-align:center; color:var(--txt-dim);}
+    a{color:var(--link)}
+
+    .toolbar{display:flex; gap:8px; align-items:center}
+    .btn{
+      padding:6px 10px; border-radius:10px; border:1px solid var(--grid); background:var(--badge);
+      cursor:pointer; color:var(--txt); text-decoration:none; box-shadow: var(--shadow);
+    }
+
+    /* Tiny term window for quotes */
+    .term{background:#020; border:1px solid #062; border-radius:12px; padding:14px; position:relative}
+    .term .dots{position:absolute; top:8px; left:8px; display:flex; gap:6px}
+    .dot{width:8px; height:8px; border-radius:50%; background:#0a3}
+
+    /* Section anchors spacing */
+    section{scroll-margin-top: 12px}
+  </style>
+</head>
+<body class="crt">
+  <div class="wrap">
+    <!-- SIDEBAR -->
+    <aside class="sidebar" aria-label="Sidebar">
+      <div class="brand">
+        <div class="logo" aria-hidden="true">&lt;/> </div>
+        <div>
+          <div class="title">your-handle</div>
+          <div class="muted">retro // tinkerer // judoka</div>
         </div>
-        <div class="welcome-text">
-          <h2>Welcome to My Corner of the Web</h2>
-          <p>Thoughts, projects, and passions—all in one place.</p>
-          <div class="social-icons">
-            <a href="https://youtube.com/yourchannel" target="_blank"><i class="fab fa-youtube"></i></a>
-            <a href="https://instagram.com/yourprofile" target="_blank"><i class="fab fa-instagram"></i></a>
-            <a href="https://linkedin.com/in/yourprofile" target="_blank"><i class="fab fa-linkedin"></i></a>
-            <a href="https://github.com/yourusername" target="_blank"><i class="fab fa-github"></i></a>
+      </div>
+
+      <nav aria-label="Main">
+        <a href="#home">_home</a>
+        <a href="#about">_about</a>
+        <a href="#projects">_projects</a>
+        <a href="#writing">_writing</a>
+        <a href="#cv">_cv</a>
+        <a href="#contact">_contact</a>
+      </nav>
+
+      <div class="toolbar">
+        <button class="btn" id="themeBtn" aria-label="Toggle theme">toggle-theme</button>
+        <a class="btn" href="#" download title="Download vCard">vcard.vcf</a>
+      </div>
+
+      <div class="term" aria-live="polite">
+        <div class="dots"><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
+        <div class="topline mono">$ <span id="typewriter"></span><span class="caret" aria-hidden="true"></span></div>
+        <div class="muted" id="clock" style="margin-top:8px"></div>
+      </div>
+
+      <div class="badges" aria-label="88x31 badges">
+        <div class="badge-88x31">valid html</div>
+        <div class="badge-88x31">no cookies</div>
+        <div class="badge-88x31">rss</div>
+        <div class="badge-88x31">ssh</div>
+      </div>
+    </aside>
+
+    <!-- MAIN -->
+    <main>
+      <section class="panel" id="home" aria-labelledby="home-title">
+        <h1 id="home-title">hello, world_</h1>
+        <p class="topline">I build <span class="tag">ML</span> things, break stuff (on purpose), and write about it.</p>
+        <p>
+          This site is a single-file, no-framework template styled to look like a vintage CRT terminal with a neon grid.
+          It's accessible, responsive, and easy to deploy on GitHub Pages, Netlify, or any static host.
+        </p>
+        <div class="grid" role="list" aria-label="Highlights">
+          <div class="panel" role="listitem">
+            <h2>now()</h2>
+            <p>Training <code>autoencoders</code> on torque/angle curves; sneaking in judo rounds; reading about RL.</p>
+          </div>
+          <div class="panel" role="listitem">
+            <h2>stack</h2>
+            <p><span class="tag">Python</span> <span class="tag">PyTorch</span> <span class="tag">Poetry</span> <span class="tag">MariaDB</span> <span class="tag">Docker</span></p>
+          </div>
+          <div class="panel" role="listitem">
+            <h2>links</h2>
+            <p>
+              <a href="#" aria-label="GitHub profile">github</a> ·
+              <a href="#" aria-label="LinkedIn profile">linkedin</a> ·
+              <a href="#" aria-label="RSS feed">rss.xml</a>
+            </p>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
 
-    <section id="gallery" class="section gallery">
-      <div class="container">
-        <h2>Photo Gallery</h2>
-        <div class="grid gallery-grid">
-          <!-- Gray box placeholders -->
-          <div class="photo-card"><img src="https://via.placeholder.com/300x200/444444/cccccc?text=Photo+1" alt="Photo 1"></div>
-          <div class="photo-card"><img src="https://via.placeholder.com/300x200/444444/cccccc?text=Photo+2" alt="Photo 2"></div>
-          <div class="photo-card"><img src="https://via.placeholder.com/300x200/444444/cccccc?text=Photo+3" alt="Photo 3"></div>
-          <div class="photo-card"><img src="https://via.placeholder.com/300x200/444444/cccccc?text=Photo+4" alt="Photo 4"></div>
-        </div>
-      </div>
-    </section>
-
-    <section id="projects" class="section">
-      <div class="container">
-        <h2>Current Project</h2>
-        <div class="project-card">
-          <h3>AI-Powered Annotation Tool</h3>
-          <p>Building a system for smart document tagging and retrieval.</p>
-        </div>
-      </div>
-    </section>
-
-    <section id="interests" class="section">
-      <div class="container">
-        <h2>Interests</h2>
-        <ul class="info-list">
-          <li>🥋 Judo & Martial Arts</li>
-          <li>🤖 Machine Learning & AI</li>
-          <li>🌍 Travel</li>
+      <section class="panel" id="about" aria-labelledby="about-title">
+        <h2 id="about-title">about_me</h2>
+        <p>
+          I'm a computer science grad who cares about clean systems, small tools, and reproducible research. I like
+          writing tiny utilities that punch above their weight.
+        </p>
+        <ul>
+          <li>Based in: DE</li>
+          <li>Hobbies: <span class="tag">judo</span>, <span class="tag">reading</span>, <span class="tag">math</span></li>
+          <li>Contact: <a href="#contact">see below</a></li>
         </ul>
-      </div>
-    </section>
-  </main>
+      </section>
 
-  <footer class="site-footer">
-    <div class="container">
-      <p>&copy; 2025 Anton Seitz. All rights reserved.</p>
-    </div>
-  </footer>
+      <section class="panel" id="projects" aria-labelledby="projects-title">
+        <h2 id="projects-title">projects</h2>
+        <div class="grid">
+          <article class="panel" aria-labelledby="p1">
+            <h3 id="p1">tighten-guard</h3>
+            <p>An unsupervised anomaly detector for screw-tightening curves. Dimensionality reduction + clustering + AE.
+            </p>
+            <p><a href="#">repo</a> · <a href="#">demo</a></p>
+          </article>
+          <article class="panel" aria-labelledby="p2">
+            <h3 id="p2">retro.css</h3>
+            <p>Drop-in stylesheet for CRT vibes: scanlines, phosphor glow, and a neon floor grid. One file.</p>
+            <p><a href="#">repo</a></p>
+          </article>
+          <article class="panel" aria-labelledby="p3">
+            <h3 id="p3">dotfiles</h3>
+            <p>Minimal shell setup with sane defaults. Fast prompt, helpful aliases, reproducible configs.</p>
+            <p><a href="#">repo</a></p>
+          </article>
+        </div>
+      </section>
+
+      <section class="panel" id="writing" aria-labelledby="writing-title">
+        <h2 id="writing-title">writing</h2>
+        <ul>
+          <li><a href="#">Autoencoders on Torque-Angle Data: Notes from the Shop Floor</a> <span class="muted">(2025-08-10)</span></li>
+          <li><a href="#">Why small tools win</a> <span class="muted">(2025-07-02)</span></li>
+          <li><a href="#">Training log: the day I learned to rest</a> <span class="muted">(2025-06-14)</span></li>
+        </ul>
+      </section>
+
+      <section class="panel" id="cv" aria-labelledby="cv-title">
+        <h2 id="cv-title">cv</h2>
+        <p>
+          Keep a plain, fast-loading CV here. Link a PDF and a plaintext version for terminals.
+          <br/>
+          <a class="btn" href="/cv.pdf" target="_blank" rel="noopener">download pdf</a>
+          <a class="btn" href="/cv.txt" target="_blank" rel="noopener">view txt</a>
+        </p>
+      </section>
+
+      <section class="panel" id="contact" aria-labelledby="contact-title">
+        <h2 id="contact-title">contact</h2>
+        <p>Email: <a href="mailto:you@domain.tld">you@domain.tld</a> · PGP: <code>0xABCD1234</code></p>
+        <form class="grid" name="contact" method="post" data-netlify="true">
+          <label>
+            <span class="mono">name</span>
+            <input name="name" required aria-label="Name" style="width:100%; padding:10px; border-radius:10px; border:1px solid var(--grid); background:var(--badge); color:var(--txt)">
+          </label>
+          <label>
+            <span class="mono">email</span>
+            <input type="email" name="email" required aria-label="Email" style="width:100%; padding:10px; border-radius:10px; border:1px solid var(--grid); background:var(--badge); color:var(--txt)">
+          </label>
+          <label style="grid-column:1/-1">
+            <span class="mono">message</span>
+            <textarea name="message" required rows="5" aria-label="Message" style="width:100%; padding:10px; border-radius:10px; border:1px solid var(--grid); background:var(--badge); color:var(--txt)"></textarea>
+          </label>
+          <button class="btn" type="submit">send</button>
+        </form>
+      </section>
+
+      <footer>
+        <p>© <span id="year"></span> your-handle • Built with <span class="mono">retro-CRT.css</span>. No JS frameworks, no cookies.</p>
+        <p>Member of the <a href="#">webring</a> · <a href="#">colophon</a></p>
+      </footer>
+    </main>
+  </div>
+
+  <script>
+    // Theme toggle (switches root color palette by toggling a class)
+    const btn = document.querySelector('#themeBtn');
+    btn.addEventListener('click', () => {
+      document.documentElement.classList.toggle('light');
+      // Quick swap: invert some root vars if .light on <html>
+      if(document.documentElement.classList.contains('light')){
+        document.documentElement.style.setProperty('--bg', '#e7fff2');
+        document.documentElement.style.setProperty('--bg-soft', '#eafff6');
+        document.documentElement.style.setProperty('--grid', '#c6f4df');
+        document.documentElement.style.setProperty('--txt', '#0b3d2a');
+        document.documentElement.style.setProperty('--txt-dim', '#296650');
+        document.documentElement.style.setProperty('--accent', '#008f5a');
+        document.documentElement.style.setProperty('--link', '#006d4b');
+        document.documentElement.style.setProperty('--badge', '#d4ffec');
+      } else {
+        document.documentElement.style.cssText = '';
+      }
+    });
+
+    // Typewriter rotation
+    const phrases = [
+      'cat ~/ideas/tiny-tools.md',
+      'ssh you@server && tmux a',
+      'python ae_train.py --dataset curves.db',
+      'git commit -m "fix: off-by-one in step finder"',
+      'make tea && write'
+    ];
+    let p = 0, i = 0, erasing = false;
+    const tw = document.getElementById('typewriter');
+    function type(){
+      const target = phrases[p];
+      tw.textContent = target.slice(0, i);
+      if(!erasing && i < target.length){ i++; setTimeout(type, 60); return; }
+      if(!erasing && i === target.length){ erasing = true; setTimeout(type, 1200); return; }
+      if(erasing && i > 0){ i--; setTimeout(type, 24); return; }
+      if(erasing && i === 0){ erasing = false; p = (p+1)%phrases.length; setTimeout(type, 200); return; }
+    }
+    type();
+
+    // Clock + year
+    function tick(){
+      const d = new Date();
+      document.getElementById('clock').textContent = d.toLocaleString();
+      document.getElementById('year').textContent = d.getFullYear();
+    }
+    tick(); setInterval(tick, 1000);
+
+    // Smooth scroll for hash links
+    document.querySelectorAll('a[href^="#"]').forEach(a=>{
+      a.addEventListener('click', e=>{
+        const id = a.getAttribute('href').slice(1);
+        const el = document.getElementById(id);
+        if(el){ e.preventDefault(); el.scrollIntoView({behavior:'smooth', block:'start'}); history.replaceState(null,'',`#${id}`); }
+      });
+    });
+  </script>
 </body>
 </html>
