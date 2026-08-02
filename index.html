@@ -1,302 +1,471 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Anton Seitz</title>
   <meta name="description" content="Personal site of Anton Seitz: engineering master's student, NLP researcher at the University of Tsukuba, and judoka." />
   <meta name="author" content="Anton Seitz" />
-  <meta name="theme-color" content="#0a0e0d" />
+  <meta name="theme-color" content="#faf9f7" />
   <meta property="og:type" content="website" />
   <meta property="og:title" content="Anton Seitz" />
   <meta property="og:description" content="Engineering master's student · NLP researcher at the University of Tsukuba · judoka." />
+
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+
+  <script>
+    /* Set theme before first paint to avoid a flash. */
+    (function () {
+      try {
+        var s = localStorage.getItem("theme");
+        if (s === "dark" || s === "light") { document.documentElement.setAttribute("data-theme", s); return; }
+      } catch (e) {}
+      if (window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches) {
+        document.documentElement.setAttribute("data-theme", "dark");
+      }
+    })();
+  </script>
+
   <style>
-:root{
---bg:#0a0e0d; --bg-soft:#0e1412; --panel:#0f1614;
---line:#1d2a24; --line-soft:#162019;
---txt:#dbe7df; --txt-dim:#88a298;
---accent:#44e08a; --accent-ink:#03130b; --link:#6ff0ac;
---tag-bg:#12211a; --glow:0 0 0 1px rgba(68,224,138,.10);
---radius:14px; --maxw:1040px;
+    :root{
+      --bg:#faf9f7;
+      --surface:#ffffff;
+      --line:#e6e2db;
+      --line-soft:#efece6;
+      --txt:#1b1c1a;
+      --txt-2:#3f423d;
+      --txt-dim:#767a71;
+      --accent:#1f6b4f;
+      --accent-soft:#eef4f0;
+      --shadow:0 1px 2px rgba(24,28,24,.04), 0 8px 24px -12px rgba(24,28,24,.10);
+      --radius:12px;
+      --maxw:720px;
+      --serif:"Newsreader", Georgia, "Times New Roman", serif;
+      --sans:"Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
     }
-html[data-theme="light"]{
---bg:#f5f8f6; --bg-soft:#ffffff; --panel:#ffffff;
---line:#dde6e0; --line-soft:#e9efea;
---txt:#11231c; --txt-dim:#5d7468;
---accent:#0f8a58; --accent-ink:#ffffff; --link:#0c764b;
---tag-bg:#ecf6f0; --glow:0 0 0 1px rgba(15,138,88,.10);
+    html[data-theme="dark"]{
+      --bg:#131413;
+      --surface:#191a18;
+      --line:#2a2c28;
+      --line-soft:#232420;
+      --txt:#eceae4;
+      --txt-2:#c8c6bf;
+      --txt-dim:#8d9087;
+      --accent:#7bc79f;
+      --accent-soft:#1b2620;
+      --shadow:0 1px 2px rgba(0,0,0,.28), 0 10px 28px -16px rgba(0,0,0,.6);
     }
-*{box-sizing:border-box}
-html{scroll-behavior:smooth}
-body{
-margin:0;
-background:radial-gradient(900px 520px at 50% -260px, rgba(68,224,138,.10), transparent 70%), var(--bg);
-color:var(--txt);
-font-family:"Space Grotesk", system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
-font-size:16px; line-height:1.62; -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility;
+
+    *,*::before,*::after{box-sizing:border-box}
+    html{scroll-behavior:smooth; -webkit-text-size-adjust:100%}
+    body{
+      margin:0;
+      background:var(--bg);
+      color:var(--txt);
+      font-family:var(--sans);
+      font-size:17px;
+      line-height:1.65;
+      -webkit-font-smoothing:antialiased;
+      text-rendering:optimizeLegibility;
     }
-body::before{
-content:""; position:fixed; inset:0; pointer-events:none; z-index:60;
-background:repeating-linear-gradient(to bottom, rgba(0,0,0,0) 0 2px, rgba(0,0,0,.035) 2px 3px); opacity:.5;
+
+    a{color:var(--txt); text-decoration:none}
+    a.link{
+      color:var(--txt);
+      border-bottom:1px solid var(--line);
+      padding-bottom:1px;
+      transition:border-color .18s ease, color .18s ease;
     }
-html[data-theme="light"] body::before{opacity:.25}
-.mono{font-family:"IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace}
-a{color:var(--link); text-decoration:none; text-underline-offset:3px}
-a:hover{text-decoration:underline}
-.wrap{max-width:var(--maxw); margin:0 auto; padding:28px 22px 60px; display:grid; gap:34px; grid-template-columns:240px 1fr; align-items:start}
-@media (max-width:880px){ .wrap{grid-template-columns:1fr; gap:22px} }
-/* SIDEBAR */
-.sidebar{position:sticky; top:24px; display:flex; flex-direction:column; gap:18px}
-@media (max-width:880px){ .sidebar{position:static} }
-.brand{display:flex; align-items:center; gap:13px}
-.logo{width:46px; height:46px; border-radius:12px; flex:none; display:grid; place-items:center; font-weight:700; font-size:15px; color:var(--accent-ink); background:var(--accent); font-family:"IBM Plex Mono",monospace; box-shadow:var(--glow)}
-.brand .name{font-size:19px; font-weight:600; letter-spacing:.2px}
-.brand .role{font-size:12px; color:var(--txt-dim)}
-nav.menu{display:flex; flex-direction:column; gap:2px}
-nav.menu a{color:var(--txt-dim); padding:7px 11px; border-radius:9px; font-size:14px; border:1px solid transparent; display:flex; gap:9px; align-items:center; transition:.15s}
-nav.menu a .mono{color:var(--accent); opacity:.7}
-nav.menu a:hover{color:var(--txt); text-decoration:none; background:var(--line-soft)}
-nav.menu a.active{color:var(--txt); background:var(--line-soft); border-color:var(--line)}
-.controls{display:flex; gap:8px}
-.btn{appearance:none; cursor:pointer; font:inherit; font-size:13px; display:inline-flex; align-items:center; gap:7px; padding:8px 12px; border-radius:10px; border:1px solid var(--line); background:var(--bg-soft); color:var(--txt); transition:.15s; text-decoration:none}
-.btn:hover{border-color:var(--accent); color:var(--accent); text-decoration:none}
-.btn.primary{background:var(--accent); color:var(--accent-ink); border-color:var(--accent); font-weight:600}
-.btn.primary:hover{filter:brightness(1.06); color:var(--accent-ink)}
-.socials{display:flex; flex-wrap:wrap; gap:8px}
-.socials a{width:38px; height:38px; border-radius:10px; display:grid; place-items:center; border:1px solid var(--line); background:var(--bg-soft); color:var(--txt-dim); transition:.15s}
-.socials a:hover{color:var(--accent); border-color:var(--accent); transform:translateY(-2px); text-decoration:none}
-.socials svg{width:18px; height:18px; display:block}
-/* terminal widget: placed last; fixed height so typing never shifts layout */
-.term{border:1px solid var(--line); border-radius:var(--radius); background:var(--bg-soft); padding:12px 13px; font-size:12.5px}
-.term .bar{display:flex; gap:6px; margin-bottom:8px}
-.term .bar i{width:9px; height:9px; border-radius:50%; background:var(--line)}
-.term .bar i:first-child{background:var(--accent); opacity:.8}
-.term .prompt{color:var(--accent)}
-.term .cmd{color:var(--txt); height:1.3em; line-height:1.3em; white-space:nowrap; overflow:hidden}
-.caret{display:inline-block; width:.55em; height:1.05em; vertical-align:-2px; background:var(--accent); margin-left:1px; animation:blink 1.1s steps(1) infinite}
-@keyframes blink{50%{opacity:0}}
-/* MAIN */
-main{display:flex; flex-direction:column; gap:22px; min-width:0}
-section{scroll-margin-top:24px}
-.eyebrow{font-family:"IBM Plex Mono",monospace; font-size:12px; letter-spacing:1px; text-transform:uppercase; color:var(--accent); margin:0 0 10px; display:flex; gap:8px; align-items:center}
-.eyebrow::before{content:""; width:14px; height:1px; background:var(--accent); opacity:.6}
-h1{font-size:clamp(30px,5vw,40px); font-weight:700; line-height:1.1; margin:0 0 12px; letter-spacing:-.5px}
-h2{font-size:22px; font-weight:600; margin:0 0 12px; letter-spacing:-.2px}
-h3{font-size:16px; font-weight:600; margin:0 0 4px}
-p{margin:0 0 12px}
-.lead{font-size:18px}
-.dim{color:var(--txt-dim)}
-.hero{border:1px solid var(--line); border-radius:18px; background:linear-gradient(180deg, rgba(68,224,138,.05), transparent 40%), var(--panel); padding:28px 28px 24px}
-.block{border:1px solid var(--line); border-radius:18px; background:var(--panel); padding:24px 28px}
-@media (max-width:560px){ .hero,.block{padding:20px 17px} }
-.cards{display:grid; gap:13px; grid-template-columns:1fr 1fr; margin-top:18px}
-@media (max-width:560px){ .cards{grid-template-columns:1fr} }
-.card{border:1px solid var(--line); border-radius:var(--radius); background:var(--bg-soft); padding:15px 16px}
-.card h3{color:var(--accent); font-family:"IBM Plex Mono",monospace; font-size:13px; margin-bottom:7px}
-.card p{font-size:14px; margin:0}
-.card p + p{margin-top:7px}
-.tags{display:flex; flex-wrap:wrap; gap:7px; margin-top:4px}
-.tag{font-family:"IBM Plex Mono",monospace; font-size:12px; padding:3px 9px; border-radius:999px; border:1px solid var(--line); background:var(--tag-bg); color:var(--txt-dim)}
-/* gallery */
-.gallery{display:grid; grid-template-columns:repeat(3,1fr); gap:11px; margin-top:18px}
-/* tablets: keep 3 across but a touch more breathing room */
-@media (max-width:760px){ .gallery{gap:10px} }
-/* phones: single, large, centered images instead of tiny thumbnails */
-@media (max-width:600px){ .gallery{grid-template-columns:1fr; gap:14px; max-width:360px; margin-left:auto; margin-right:auto} }
-.shot{position:relative; aspect-ratio:3/4; border-radius:12px; overflow:hidden; border:1px solid var(--line); background:linear-gradient(160deg, var(--bg-soft), var(--tag-bg))}
-.shot img{position:absolute; inset:0; width:100%; height:100%; object-fit:cover; z-index:1}
-.shot .ph{position:absolute; inset:0; display:flex; flex-direction:column; gap:6px; align-items:center; justify-content:center; text-align:center; color:var(--txt-dim); padding:8px}
-.shot .ph svg{width:22px; height:22px; opacity:.6}
-.shot .ph small{font-family:"IBM Plex Mono",monospace; font-size:9.5px; opacity:.75; word-break:break-all}
-.shot figcaption{position:absolute; left:0; right:0; bottom:0; z-index:2; font-family:"IBM Plex Mono",monospace; font-size:10.5px; color:#eaf6ef; padding:14px 9px 7px; background:linear-gradient(transparent, rgba(0,0,0,.62))}
-/* compact roles */
-.roles{list-style:none; margin:10px 0 14px; padding:0; display:flex; flex-direction:column}
-.roles li{display:flex; justify-content:space-between; align-items:baseline; gap:12px; padding:8px 0; border-top:1px solid var(--line-soft); font-size:14px}
-.roles li:first-child{border-top:none}
-.roles .meta{color:var(--txt-dim); font-family:"IBM Plex Mono",monospace; font-size:12px; white-space:nowrap}
-.contact-row{display:flex; flex-wrap:wrap; gap:10px; align-items:center; margin-top:6px}
-/* quiet secondary links (e.g. taste profiles) */
-.elsewhere{font-size:14px; margin-top:14px; padding-top:13px; border-top:1px solid var(--line-soft)}
-.elsewhere .lbl{font-family:"IBM Plex Mono",monospace; font-size:11px; letter-spacing:.6px; text-transform:uppercase; color:var(--txt-dim); margin-right:4px}
-footer{max-width:var(--maxw); margin:0 auto; padding:0 22px 44px; color:var(--txt-dim); font-size:13px; text-align:center}
-@media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto} .caret{animation:none} }
-</style>
+    a.link:hover{color:var(--accent); border-color:var(--accent)}
+    ::selection{background:var(--accent-soft); color:var(--txt)}
+    :focus-visible{outline:2px solid var(--accent); outline-offset:3px; border-radius:4px}
+
+    /* ---------- header ---------- */
+    header.site{
+      position:sticky; top:0; z-index:20;
+      background:color-mix(in srgb, var(--bg) 86%, transparent);
+      backdrop-filter:saturate(1.4) blur(10px);
+      -webkit-backdrop-filter:saturate(1.4) blur(10px);
+      border-bottom:1px solid transparent;
+      transition:border-color .2s ease;
+    }
+    header.site.scrolled{border-bottom-color:var(--line)}
+    .bar{
+      max-width:var(--maxw); margin:0 auto; padding:14px 24px;
+      display:flex; align-items:center; gap:18px;
+    }
+    .wordmark{
+      font-family:var(--serif); font-size:19px; font-weight:600; letter-spacing:-.01em;
+      white-space:nowrap; margin-right:auto;
+    }
+    nav.menu{display:flex; align-items:center; gap:4px; overflow-x:auto; scrollbar-width:none}
+    nav.menu::-webkit-scrollbar{display:none}
+    nav.menu a{
+      font-size:14px; color:var(--txt-dim); padding:6px 10px; border-radius:8px;
+      white-space:nowrap; transition:color .18s ease, background-color .18s ease;
+    }
+    nav.menu a:hover{color:var(--txt); background:var(--line-soft)}
+    nav.menu a.active{color:var(--accent)}
+    .theme-btn{
+      flex:none; appearance:none; cursor:pointer; font:inherit;
+      width:34px; height:34px; display:grid; place-items:center;
+      border:1px solid var(--line); border-radius:9px;
+      background:var(--surface); color:var(--txt-dim);
+      transition:color .18s ease, border-color .18s ease;
+    }
+    .theme-btn:hover{color:var(--accent); border-color:var(--accent)}
+    .theme-btn svg{width:17px; height:17px}
+    html:not([data-theme="dark"]) .icon-sun{display:none}
+    html[data-theme="dark"] .icon-moon{display:none}
+    @media (max-width:640px){
+      .bar{padding:12px 20px; gap:10px}
+      nav.menu{display:none}
+    }
+
+    /* ---------- layout ---------- */
+    main{max-width:var(--maxw); margin:0 auto; padding:0 24px}
+    @media (max-width:640px){ main{padding:0 20px} }
+
+    section{padding:56px 0; border-top:1px solid var(--line); scroll-margin-top:72px}
+    section:first-child{border-top:none}
+    @media (max-width:640px){ section{padding:44px 0} }
+
+    .label{
+      font-size:11.5px; font-weight:500; letter-spacing:.13em; text-transform:uppercase;
+      color:var(--txt-dim); margin:0 0 14px;
+    }
+
+    h1{
+      font-family:var(--serif); font-weight:500;
+      font-size:clamp(38px,7vw,54px); line-height:1.08; letter-spacing:-.02em;
+      margin:0 0 16px;
+    }
+    h2{
+      font-family:var(--serif); font-weight:500;
+      font-size:clamp(25px,4vw,30px); line-height:1.22; letter-spacing:-.015em;
+      margin:0 0 18px;
+    }
+    p{margin:0 0 18px; color:var(--txt-2)}
+    p:last-child{margin-bottom:0}
+    .lead{
+      font-family:var(--serif); font-size:clamp(20px,3vw,23px); line-height:1.5;
+      color:var(--txt); margin-bottom:20px;
+    }
+    .muted{color:var(--txt-dim); font-size:15.5px}
+
+    /* ---------- hero ---------- */
+    #home{padding-top:64px; padding-bottom:52px}
+    .hero-meta{
+      display:flex; flex-wrap:wrap; align-items:center; gap:8px 14px;
+      font-size:14px; color:var(--txt-dim); margin:0 0 26px;
+    }
+    .hero-meta .dot{width:3px; height:3px; border-radius:50%; background:var(--line); flex:none}
+    .status{display:inline-flex; align-items:center; gap:7px; color:var(--accent)}
+    .status::before{
+      content:""; width:7px; height:7px; border-radius:50%; background:var(--accent);
+      box-shadow:0 0 0 3px var(--accent-soft);
+    }
+
+    .actions{display:flex; flex-wrap:wrap; gap:10px; margin-top:28px}
+    .btn{
+      display:inline-flex; align-items:center; gap:8px;
+      font-size:14.5px; font-weight:500; padding:9px 16px;
+      border-radius:9px; border:1px solid var(--line); background:var(--surface);
+      color:var(--txt); cursor:pointer;
+      transition:border-color .18s ease, color .18s ease, transform .18s ease, background-color .18s ease;
+    }
+    .btn:hover{border-color:var(--accent); color:var(--accent); transform:translateY(-1px)}
+    .btn.primary{
+      background:var(--accent); border-color:var(--accent);
+      color:var(--bg);
+    }
+    html[data-theme="dark"] .btn.primary{color:#10201a}
+    .btn.primary:hover{color:var(--bg); filter:brightness(1.06)}
+    html[data-theme="dark"] .btn.primary:hover{color:#10201a}
+    .btn svg{width:15px; height:15px}
+
+    /* ---------- gallery ---------- */
+    .gallery{display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-top:30px}
+    @media (max-width:600px){
+      .gallery{grid-template-columns:1fr; gap:18px; max-width:340px; margin-left:auto; margin-right:auto}
+    }
+    figure.shot{
+      position:relative; margin:0; aspect-ratio:3/4; overflow:hidden;
+      border-radius:var(--radius); border:1px solid var(--line);
+      background:var(--surface); box-shadow:var(--shadow);
+    }
+    figure.shot img{
+      position:absolute; inset:0; z-index:1; width:100%; height:100%;
+      object-fit:cover; transition:transform .5s cubic-bezier(.2,.6,.2,1);
+    }
+    figure.shot:hover img{transform:scale(1.04)}
+    figure.shot .ph{
+      position:absolute; inset:0; display:grid; place-items:center;
+      color:var(--txt-dim); opacity:.5;
+    }
+    figure.shot .ph svg{width:24px; height:24px}
+    figure.shot figcaption{
+      position:absolute; left:0; right:0; bottom:0; z-index:2;
+      font-size:12.5px; letter-spacing:.01em; color:#fff;
+      padding:26px 12px 10px;
+      background:linear-gradient(transparent, rgba(12,16,12,.68));
+    }
+
+    /* ---------- roles ---------- */
+    ul.roles{list-style:none; margin:26px 0 24px; padding:0}
+    ul.roles li{
+      display:flex; justify-content:space-between; align-items:baseline; gap:16px;
+      padding:13px 0; border-top:1px solid var(--line-soft);
+    }
+    ul.roles li:first-child{border-top:none; padding-top:0}
+    ul.roles .who{font-size:15.5px; color:var(--txt)}
+    ul.roles .who small{display:block; color:var(--txt-dim); font-size:13.5px; margin-top:1px}
+    ul.roles .when{font-size:13.5px; color:var(--txt-dim); white-space:nowrap; font-variant-numeric:tabular-nums}
+
+    .tags{display:flex; flex-wrap:wrap; gap:7px; margin:14px 0 0}
+    .tag{
+      font-size:12.5px; color:var(--txt-dim);
+      padding:4px 10px; border-radius:999px;
+      border:1px solid var(--line); background:var(--surface);
+    }
+
+    .note{
+      margin-top:26px; padding:16px 18px;
+      border:1px solid var(--line); border-radius:var(--radius);
+      background:var(--surface); font-size:15px; color:var(--txt-dim);
+    }
+    .note strong{color:var(--txt); font-weight:500}
+
+    /* ---------- contact ---------- */
+    .socials{display:flex; flex-wrap:wrap; gap:9px; margin-top:22px}
+    .socials a{
+      width:40px; height:40px; display:grid; place-items:center;
+      border:1px solid var(--line); border-radius:10px;
+      background:var(--surface); color:var(--txt-dim);
+      transition:color .18s ease, border-color .18s ease, transform .18s ease;
+    }
+    .socials a:hover{color:var(--accent); border-color:var(--accent); transform:translateY(-2px)}
+    .socials svg{width:18px; height:18px; display:block}
+
+    footer{
+      max-width:var(--maxw); margin:0 auto; padding:26px 24px 50px;
+      border-top:1px solid var(--line);
+      display:flex; flex-wrap:wrap; justify-content:space-between; gap:10px;
+      color:var(--txt-dim); font-size:13.5px;
+    }
+    footer a{color:var(--txt-dim)}
+    footer a:hover{color:var(--accent)}
+
+    /* ---------- entrance ---------- */
+    .reveal{opacity:0; transform:translateY(10px); transition:opacity .6s ease, transform .6s ease}
+    .reveal.in{opacity:1; transform:none}
+    @media (prefers-reduced-motion:reduce){
+      html{scroll-behavior:auto}
+      .reveal{opacity:1; transform:none; transition:none}
+      figure.shot img{transition:none}
+      .btn:hover, .socials a:hover{transform:none}
+    }
+  </style>
 </head>
 <body>
-  <div class="wrap">
-<!-- SIDEBAR -->
-    <aside class="sidebar">
-      <div class="brand">
-        <div class="logo mono">AS</div>
-        <div>
-          <div class="name">Anton Seitz</div>
-          <div class="role mono">nlp researcher · judoka</div>
-        </div>
-      </div>
-      <nav class="menu" aria-label="Sections">
-        <a href="#home"><span class="mono">01</span> home</a>
-        <a href="#about"><span class="mono">02</span> about</a>
-        <a href="#work"><span class="mono">03</span> work</a>
-        <a href="#judo"><span class="mono">04</span> off-screen</a>
-        <a href="#contact"><span class="mono">05</span> contact</a>
-      </nav>
-      <div class="controls">
-        <a class="btn primary" href="cv.pdf" target="_blank" rel="noopener">↓ CV (PDF)</a>
-        <button class="btn" id="themeBtn" type="button" aria-label="Toggle light or dark theme">◐ theme</button>
-      </div>
-      <div class="socials" aria-label="Profiles">
-        <a href="https://www.linkedin.com/in/antonseitz/" target="_blank" rel="noopener" title="LinkedIn" aria-label="LinkedIn">
-          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M4.98 3.5A2.5 2.5 0 1 1 0 3.5a2.5 2.5 0 0 1 4.98 0ZM.5 8.5h4v15h-4v-15Zm7 0h3.8v2h.05c.53-1 1.83-2.05 3.77-2.05 4.03 0 4.78 2.65 4.78 6.1v8.95h-4v-7.93c0-1.9-.03-4.33-2.64-4.33-2.64 0-3.04 2.06-3.04 4.19v8.07h-4v-15Z"/></svg>
-        </a>
-        <a href="https://www.instagram.com/anton.seitz/" target="_blank" rel="noopener" title="Instagram" aria-label="Instagram">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2.5" y="2.5" width="19" height="19" rx="5"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.6" cy="6.4" r="1.2" fill="currentColor" stroke="none"/></svg>
-        </a>
-        <a href="https://judoinside.com/judoka/97249/Anton_Seitz/judo-results" target="_blank" rel="noopener" title="JudoInside profile" aria-label="JudoInside">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="9" r="5.2"/><path d="M9.2 13.4 7 22l5-2.6L17 22l-2.2-8.6"/></svg>
-        </a>
-        <a href="https://www.ijf.org/judoka/75763/overview" target="_blank" rel="noopener" title="IJF profile" aria-label="International Judo Federation">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9.2"/><path d="M2.8 12h18.4M12 2.8c2.6 2.5 4 5.8 4 9.2s-1.4 6.7-4 9.2c-2.6-2.5-4-5.8-4-9.2s1.4-6.7 4-9.2Z"/></svg>
-        </a>
-        <a href="mailto:seitz.anton1@gmail.com" title="Email" aria-label="Email">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2.5" y="4.5" width="19" height="15" rx="2.5"/><path d="m3 6 9 6 9-6"/></svg>
-        </a>
-      </div>
-      <div class="term mono" aria-hidden="true">
-        <div class="bar"><i></i><i></i><i></i></div>
-        <div class="prompt">anton@tsukuba:~$</div>
-        <div class="cmd"><span id="tw"></span><span class="caret"></span></div>
-      </div>
-    </aside>
-<!-- MAIN -->
-    <main>
-      <section id="home" class="hero">
-        <p class="eyebrow">hello, world</p>
-        <h1>Hi, I'm Anton.</h1>
-        <p class="lead">Engineering master's student, NLP researcher, and judoka, currently living in Japan.</p>
-        <p class="dim">I was one of six people selected from Germany for the MEXT scholarship, and I'm now at the University of Tsukuba studying Intelligent &amp; Mechanical Interaction Systems and researching natural language processing in the Utsuro Lab. Before Japan, I spent 3 years working on various projects at Bosch.</p>
-        <div class="cards">
-          <div class="card">
-            <h3>now()</h3>
-            <p>Researching NLP &amp; large language models in the Utsuro Lab, and training with the University of Tsukuba judo team.</p>
-          </div>
-          <div class="card">
-            <h3>find me</h3>
-            <p><a href="https://www.linkedin.com/in/antonseitz/" target="_blank" rel="noopener">LinkedIn</a> · <a href="https://www.instagram.com/anton.seitz/" target="_blank" rel="noopener">Instagram</a> · <a href="https://judoinside.com/judoka/97249/Anton_Seitz/judo-results" target="_blank" rel="noopener">JudoInside</a> · <a href="https://www.ijf.org/judoka/75763/overview" target="_blank" rel="noopener">IJF</a></p>
-            <p class="dim">seitz.anton1@gmail.com</p>
-          </div>
-        </div>
-      </section>
-      <section id="about" class="block">
-        <p class="eyebrow">about</p>
-        <h2>A short version</h2>
-        <p>I like work that sits between research and something you can actually run. The part I enjoy most is figuring out how language models reason, and where they fall apart. I try to keep what I make small, honest, and well tested.</p>
-        <p>I grew up between German and Russian, studied in English, and I'm slowly adding Japanese. I came to Japan in 2026 for my master's, drawn as much by the research as by the chance to keep training judo at a serious level.</p>
-        <div class="gallery">
-          <figure class="shot">
-            <div class="ph"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="6" width="18" height="14" rx="2"/><circle cx="12" cy="13" r="3.4"/><path d="M8 6l1.5-2h5L16 6"/></svg><small>images/0.png</small></div>
-            <img src="images/0.png" alt="Anton in a suit" loading="lazy" onerror="this.remove()">
-            <figcaption>in a suit</figcaption>
-          </figure>
-          <figure class="shot">
-            <div class="ph"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="6" width="18" height="14" rx="2"/><circle cx="12" cy="13" r="3.4"/><path d="M8 6l1.5-2h5L16 6"/></svg><small>images/1.png</small></div>
-            <img src="images/1.png" alt="Anton competing in a judogi" loading="lazy" onerror="this.remove()">
-            <figcaption>on the mat</figcaption>
-          </figure>
-          <figure class="shot">
-            <div class="ph"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="6" width="18" height="14" rx="2"/><circle cx="12" cy="13" r="3.4"/><path d="M8 6l1.5-2h5L16 6"/></svg><small>images/2.png</small></div>
-            <img src="images/2.png" alt="Anton with a golden eagle in Kyrgyzstan" loading="lazy" onerror="this.remove()">
-            <figcaption>kyrgyzstan, with an eagle</figcaption>
-          </figure>
-        </div>
-      </section>
-      <section id="work" class="block">
-        <p class="eyebrow">work</p>
-        <h2>The short version</h2>
-        <p>Three years at Bosch before Japan, working across different departments and locations: an unsupervised anomaly-detector for my bachelor thesis, retrieval-augmented data assistants, a local LLM workstation, and a Teams bot in Yokohama. Now I research NLP and large language models full time.</p>
-        <ul class="roles">
-          <li><span>Researcher, Utsuro NLP Lab · Univ. of Tsukuba</span><span class="meta">2026 · now</span></li>
-          <li><span>Bachelor Thesis, Bosch Vehicle Motion</span><span class="meta">2025</span></li>
-          <li><span>ML Intern, Bosch Digital · Berlin</span><span class="meta">2025</span></li>
-          <li><span>SWE Intern, Bosch Japan · Yokohama</span><span class="meta">2024</span></li>
-        </ul>
-        <p class="dim" style="font-size:14px; margin-bottom:14px">BSc Computer Science, DHBW Stuttgart. Tools I use: Python, SQL, NLP &amp; LLMs, RAG, TensorFlow, Docker. Languages: German &amp; Russian (native), English (C1), Japanese (learning).</p>
-        <div class="contact-row">
-          <a class="btn primary" href="cv.pdf" target="_blank" rel="noopener">↓ Full CV (PDF)</a>
-          <a class="btn" href="https://www.linkedin.com/in/antonseitz/" target="_blank" rel="noopener">Full history on LinkedIn</a>
-        </div>
-      </section>
-      <section id="judo" class="block">
-        <p class="eyebrow">off the screen</p>
-        <h2>Judo, and a few other things</h2>
-        <p>I started judo at six, back in Germany, and it has shaped most of my life since. Over the years I competed across Europe and Asia, with a few results I'm happy with: gold at several Asian Cups and Opens. For a long stretch I trained and competed while working through a demanding dual-study degree, which taught me as much about scheduling as about the sport. These days I train with the University of Tsukuba team. The full record is on <a href="https://judoinside.com/judoka/97249/Anton_Seitz/judo-results" target="_blank" rel="noopener">JudoInside</a> and the <a href="https://www.ijf.org/judoka/75763/overview" target="_blank" rel="noopener">IJF</a>.</p>
-        <p>More than the medals, judo is where I learned to lose well, keep showing up, and trust that small daily reps add up. A lot of how I approach research comes from the same place.</p>
-        <p class="dim" style="margin-bottom:0">Away from the mat and the keyboard: I am interested in literature, mathematics, movies and manga</p>
-        <p class="elsewhere"><span class="lbl">elsewhere</span> I log films on <a href="https://letterboxd.com/AntonBS/" target="_blank" rel="noopener">Letterboxd</a> and track anime on <a href="https://myanimelist.net/profile/AntonBS" target="_blank" rel="noopener">MyAnimeList</a>.</p>
-      </section>
-      <section id="contact" class="block">
-        <p class="eyebrow">contact</p>
-        <h2>Get in touch</h2>
-        <p>Email is the fastest way to reach me.</p>
-        <div class="contact-row">
-          <a class="btn primary" href="mailto:seitz.anton1@gmail.com">seitz.anton1@gmail.com</a>
-          <a class="btn" href="https://www.linkedin.com/in/antonseitz/" target="_blank" rel="noopener">LinkedIn</a>
-        </div>
-      </section>
-    </main>
+
+<header class="site" id="siteHeader">
+  <div class="bar">
+    <a class="wordmark" href="#home">Anton Seitz</a>
+    <nav class="menu" aria-label="Sections">
+      <a href="#about">About</a>
+      <a href="#work">Work</a>
+      <a href="#judo">Judo</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <button class="theme-btn" id="themeBtn" type="button" aria-label="Toggle colour theme">
+      <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5Z"/></svg>
+      <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.6v2.2M12 19.2v2.2M2.6 12h2.2M19.2 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M18.7 5.3l-1.6 1.6M6.9 17.1l-1.6 1.6"/></svg>
+    </button>
   </div>
-  <footer>
-    <p>© <span id="year"></span> Anton Seitz</p>
-  </footer>
-  <script>
-// Theme (remembers your choice)
-    (function () {
-var root = document.documentElement, saved = null;
-try { saved = localStorage.getItem("theme"); } catch (e) {}
-if (saved) root.setAttribute("data-theme", saved);
-else if (window.matchMedia && window.matchMedia("(prefers-color-scheme: light)").matches) root.setAttribute("data-theme", "light");
-document.getElementById("themeBtn").addEventListener("click", function () {
-var next = root.getAttribute("data-theme") === "light" ? "dark" : "light";
-root.setAttribute("data-theme", next);
-try { localStorage.setItem("theme", next); } catch (e) {}
+</header>
+
+<main>
+
+  <section id="home">
+    <h1>Anton&nbsp;Seitz</h1>
+    <p class="lead">Engineering master's student, NLP researcher, and judoka — currently in Japan.</p>
+    <div class="hero-meta">
+      <span class="status">Tsukuba, Japan</span>
+      <span class="dot" aria-hidden="true"></span>
+      <span>Utsuro NLP Lab</span>
+      <span class="dot" aria-hidden="true"></span>
+      <span>MEXT scholar</span>
+    </div>
+    <p>I was one of six people selected from Germany for the MEXT scholarship, and I'm now at the University of Tsukuba studying Intelligent &amp; Mechanical Interaction Systems and researching natural language processing in the Utsuro Lab. Before Japan, I spent three years working on various projects at Bosch.</p>
+    <p class="muted">Right now: large language models in the lab, and training with the University of Tsukuba judo team.</p>
+    <div class="actions">
+      <a class="btn primary" href="cv.pdf" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.5v12M7.5 11l4.5 4.5 4.5-4.5M4.5 19.5h15"/></svg>
+        Curriculum vitae
+      </a>
+      <a class="btn" href="mailto:seitz.anton1@gmail.com">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="2.8" y="4.8" width="18.4" height="14.4" rx="2.4"/><path d="m3.4 6.4 8.6 5.8 8.6-5.8"/></svg>
+        Email me
+      </a>
+      <a class="btn" href="https://www.linkedin.com/in/antonseitz/" target="_blank" rel="noopener">LinkedIn</a>
+    </div>
+  </section>
+
+  <section id="about" class="reveal">
+    <p class="label">About</p>
+    <h2>A short introduction</h2>
+    <p>I like work that sits between research and something you can actually run. The part I enjoy most is figuring out how language models reason, and where they fall apart. I try to keep what I make small, honest, and well tested.</p>
+    <p>I grew up between German and Russian, studied in English, and I'm slowly adding Japanese. I came to Japan in 2026 for my master's, drawn as much by the research as by the chance to keep training judo at a serious level.</p>
+    <div class="gallery">
+      <figure class="shot">
+        <div class="ph" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="6" width="18" height="14" rx="2.4"/><circle cx="12" cy="13" r="3.4"/><path d="M8.4 6 9.8 3.9h4.4L15.6 6"/></svg></div>
+        <img src="images/0.png" alt="Anton in a suit" loading="lazy" onerror="this.remove()" />
+        <figcaption>In a suit</figcaption>
+      </figure>
+      <figure class="shot">
+        <div class="ph" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="6" width="18" height="14" rx="2.4"/><circle cx="12" cy="13" r="3.4"/><path d="M8.4 6 9.8 3.9h4.4L15.6 6"/></svg></div>
+        <img src="images/2.png" alt="Anton training judo" loading="lazy" onerror="this.remove()" />
+        <figcaption>On the mat</figcaption>
+      </figure>
+      <figure class="shot">
+        <div class="ph" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="6" width="18" height="14" rx="2.4"/><circle cx="12" cy="13" r="3.4"/><path d="M8.4 6 9.8 3.9h4.4L15.6 6"/></svg></div>
+        <img src="images/1.png" alt="Anton in Kyrgyzstan holding an eagle" loading="lazy" onerror="this.remove()" />
+        <figcaption>Kyrgyzstan, with an eagle</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section id="work" class="reveal">
+    <p class="label">Work</p>
+    <h2>Experience</h2>
+    <p>Three years at Bosch before Japan, across different departments and locations: an unsupervised anomaly detector for my bachelor thesis, retrieval-augmented data assistants, a local LLM workstation, and a Teams bot in Yokohama. Now I research NLP and large language models full time.</p>
+    <ul class="roles">
+      <li>
+        <span class="who">Researcher, Utsuro NLP Lab<small>University of Tsukuba</small></span>
+        <span class="when">2026 — now</span>
+      </li>
+      <li>
+        <span class="who">Bachelor thesis<small>Bosch Vehicle Motion</small></span>
+        <span class="when">2025</span>
+      </li>
+      <li>
+        <span class="who">Machine learning intern<small>Bosch Digital, Berlin</small></span>
+        <span class="when">2025</span>
+      </li>
+      <li>
+        <span class="who">Software engineering intern<small>Bosch Japan, Yokohama</small></span>
+        <span class="when">2024</span>
+      </li>
+    </ul>
+    <p class="muted" style="margin-bottom:0">BSc Computer Science, DHBW Stuttgart.</p>
+    <div class="tags">
+      <span class="tag">Python</span><span class="tag">SQL</span><span class="tag">NLP &amp; LLMs</span>
+      <span class="tag">RAG</span><span class="tag">TensorFlow</span><span class="tag">Docker</span>
+    </div>
+    <div class="note"><strong>Languages.</strong> German and Russian (native), English (C1), Japanese (learning).</div>
+    <div class="actions">
+      <a class="btn primary" href="cv.pdf" target="_blank" rel="noopener">Full CV (PDF)</a>
+      <a class="btn" href="https://www.linkedin.com/in/antonseitz/" target="_blank" rel="noopener">Full history on LinkedIn</a>
+    </div>
+  </section>
+
+  <section id="judo" class="reveal">
+    <p class="label">Off the screen</p>
+    <h2>Judo, and a few other things</h2>
+    <p>I started judo at six, back in Germany, and it has shaped most of my life since. Over the years I competed across Europe and Asia, with a few results I'm happy with: gold at several Asian Cups and Opens. For a long stretch I trained and competed while working through a demanding dual-study degree, which taught me as much about scheduling as about the sport. These days I train with the University of Tsukuba team. The full record is on <a class="link" href="https://judoinside.com/judoka/97249/Anton_Seitz/judo-results" target="_blank" rel="noopener">JudoInside</a> and the <a class="link" href="https://www.ijf.org/judoka/75763/overview" target="_blank" rel="noopener">IJF</a>.</p>
+    <p>More than the medals, judo is where I learned to lose well, keep showing up, and trust that small daily reps add up. A lot of how I approach research comes from the same place.</p>
+    <p class="muted">Away from the mat and the keyboard, I'm interested in literature, mathematics, film and manga. I log films on <a class="link" href="https://letterboxd.com/AntonBS/" target="_blank" rel="noopener">Letterboxd</a> and track anime on <a class="link" href="https://myanimelist.net/profile/AntonBS" target="_blank" rel="noopener">MyAnimeList</a>.</p>
+  </section>
+
+  <section id="contact" class="reveal">
+    <p class="label">Contact</p>
+    <h2>Get in touch</h2>
+    <p>Email is the fastest way to reach me — I read everything and reply to most.</p>
+    <div class="actions">
+      <a class="btn primary" href="mailto:seitz.anton1@gmail.com">seitz.anton1@gmail.com</a>
+    </div>
+    <div class="socials" aria-label="Profiles">
+      <a href="https://www.linkedin.com/in/antonseitz/" target="_blank" rel="noopener" title="LinkedIn" aria-label="LinkedIn">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M4.98 3.5A2.5 2.5 0 1 1 0 3.5a2.5 2.5 0 0 1 4.98 0ZM.5 8.5h4v15h-4v-15Zm7 0h3.8v2h.05c.53-1 1.83-2.05 3.77-2.05 4.03 0 4.78 2.65 4.78 6.1v8.95h-4v-7.93c0-1.9-.03-4.33-2.64-4.33-2.64 0-3.04 2.06-3.04 4.19v8.07h-4v-15Z"/></svg>
+      </a>
+      <a href="https://www.instagram.com/anton.seitz/" target="_blank" rel="noopener" title="Instagram" aria-label="Instagram">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2.6" y="2.6" width="18.8" height="18.8" rx="5"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.6" cy="6.4" r="1.15" fill="currentColor" stroke="none"/></svg>
+      </a>
+      <a href="https://judoinside.com/judoka/97249/Anton_Seitz/judo-results" target="_blank" rel="noopener" title="JudoInside profile" aria-label="JudoInside">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="9" r="5.2"/><path d="M9.2 13.4 7 22l5-2.6L17 22l-2.2-8.6"/></svg>
+      </a>
+      <a href="https://www.ijf.org/judoka/75763/overview" target="_blank" rel="noopener" title="IJF profile" aria-label="International Judo Federation">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9.2"/><path d="M2.8 12h18.4M12 2.8c2.6 2.5 4 5.8 4 9.2s-1.4 6.7-4 9.2c-2.6-2.5-4-5.8-4-9.2s1.4-6.7 4-9.2Z"/></svg>
+      </a>
+      <a href="mailto:seitz.anton1@gmail.com" title="Email" aria-label="Email">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2.8" y="4.8" width="18.4" height="14.4" rx="2.4"/><path d="m3.4 6.4 8.6 5.8 8.6-5.8"/></svg>
+      </a>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <span>© <span id="year"></span> Anton Seitz</span>
+  <a href="#home">Back to top ↑</a>
+</footer>
+
+<script>
+  /* Theme toggle */
+  (function () {
+    var root = document.documentElement;
+    document.getElementById("themeBtn").addEventListener("click", function () {
+      var next = root.getAttribute("data-theme") === "dark" ? "light" : "dark";
+      root.setAttribute("data-theme", next);
+      try { localStorage.setItem("theme", next); } catch (e) {}
+    });
+  })();
+
+  /* Header hairline on scroll */
+  (function () {
+    var h = document.getElementById("siteHeader");
+    var onScroll = function () { h.classList.toggle("scrolled", window.scrollY > 8); };
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+  })();
+
+  /* Current year */
+  document.getElementById("year").textContent = new Date().getFullYear();
+
+  /* Active section in nav */
+  (function () {
+    if (!("IntersectionObserver" in window)) return;
+    var links = Array.prototype.slice.call(document.querySelectorAll("nav.menu a"));
+    var map = {};
+    links.forEach(function (a) { map[a.getAttribute("href").slice(1)] = a; });
+    var obs = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        if (!en.isIntersecting) return;
+        links.forEach(function (l) { l.classList.remove("active"); });
+        if (map[en.target.id]) map[en.target.id].classList.add("active");
       });
-    })();
-// Terminal typewriter (short phrases, fixed-height line so nothing shifts)
-    (function () {
-var phrases = ["cat ideas.md", "python train.py", "git push origin main", "uchikomi x100", "make tea && read"];
-var el = document.getElementById("tw");
-var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-if (reduce) { el.textContent = phrases[0]; return; }
-var p = 0, i = 0, erase = false;
-function tick() {
-var t = phrases[p];
-el.textContent = t.slice(0, i);
-if (!erase && i < t.length) { i++; return setTimeout(tick, 60); }
-if (!erase && i === t.length) { erase = true; return setTimeout(tick, 1500); }
-if (erase && i > 0) { i--; return setTimeout(tick, 24); }
-erase = false; p = (p + 1) % phrases.length; setTimeout(tick, 380);
-      }
-tick();
-    })();
-// Year
-document.getElementById("year").textContent = new Date().getFullYear();
-// Active section highlight
-    (function () {
-var links = Array.prototype.slice.call(document.querySelectorAll("nav.menu a")), map = {};
-links.forEach(function (a) { map[a.getAttribute("href").slice(1)] = a; });
-if (!("IntersectionObserver" in window)) return;
-var obs = new IntersectionObserver(function (entries) {
-entries.forEach(function (en) {
-if (en.isIntersecting) {
-links.forEach(function (l) { l.classList.remove("active"); });
-if (map[en.target.id]) map[en.target.id].classList.add("active");
-          }
-        });
-      }, { rootMargin: "-45% 0px -50% 0px" });
-document.querySelectorAll("main section").forEach(function (s) { obs.observe(s); });
-    })();
+    }, { rootMargin: "-45% 0px -50% 0px" });
+    document.querySelectorAll("main section").forEach(function (s) { obs.observe(s); });
+  })();
+
+  /* Gentle reveal on scroll */
+  (function () {
+    var items = document.querySelectorAll(".reveal");
+    var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reduce || !("IntersectionObserver" in window)) {
+      items.forEach(function (el) { el.classList.add("in"); });
+      return;
+    }
+    var obs = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        if (en.isIntersecting) { en.target.classList.add("in"); obs.unobserve(en.target); }
+      });
+    }, { rootMargin: "0px 0px -8% 0px", threshold: 0.05 });
+    items.forEach(function (el) { obs.observe(el); });
+  })();
 </script>
 </body>
 </html>
